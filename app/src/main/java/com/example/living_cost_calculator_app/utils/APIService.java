@@ -28,4 +28,6 @@ public interface APIService {
     Call<User> findByUsername(@Query("q") String query);
     @POST("group")
     Call<Group> create_group(@Body Group group);
+    @GET("group/user/{user_id}")
+    Call<List<Group>> getGroupsByUserId(@Path("user_id") String user_id);
 }
