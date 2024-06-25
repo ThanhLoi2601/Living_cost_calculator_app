@@ -1,11 +1,12 @@
 package com.example.living_cost_calculator_app.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.living_cost_calculator_app.R;
 import com.example.living_cost_calculator_app.models.Group;
-import com.example.living_cost_calculator_app.models.User;
+import com.example.living_cost_calculator_app.ui.my_groups.DetailMyGroupActivity;
 
 import java.util.List;
 
@@ -40,6 +41,14 @@ public class MyGroupAdapter extends RecyclerView.Adapter<MyGroupAdapter.MyViewHo
         Group group = array.get(position);
         holder.tvGroupname.setText(group.getName());
         holder.tvNumMember.setText(group.getUsers().size()+" members");
+        holder.btnViewDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(context, DetailMyGroupActivity.class);
+                intent.putExtra("group_click", group);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -57,12 +66,6 @@ public class MyGroupAdapter extends RecyclerView.Adapter<MyGroupAdapter.MyViewHo
             tvGroupname = (TextView) itemView.findViewById(R.id.tvNameGroup);
             tvNumMember = (TextView) itemView.findViewById(R.id.tvNumMember);
             btnViewDetail = (Button) itemView.findViewById(R.id.btnViewGroupDetail);
-            btnViewDetail.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
         }
 
     }

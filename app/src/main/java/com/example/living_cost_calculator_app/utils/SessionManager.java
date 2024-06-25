@@ -3,6 +3,8 @@ package com.example.living_cost_calculator_app.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import androidx.fragment.app.FragmentManager;
+
 import com.example.living_cost_calculator_app.models.User;
 
 public class SessionManager {

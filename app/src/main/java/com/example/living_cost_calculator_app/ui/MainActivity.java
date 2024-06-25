@@ -13,11 +13,14 @@ import android.widget.Toast;
 
 import com.example.living_cost_calculator_app.R;
 import com.example.living_cost_calculator_app.models.User;
+import com.example.living_cost_calculator_app.ui.my_groups.MyGroupsFragment;
 import com.example.living_cost_calculator_app.utils.APIService;
 import com.example.living_cost_calculator_app.utils.RetrofitClient;
 import com.example.living_cost_calculator_app.utils.SessionManager;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -34,6 +37,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -47,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView txtEmail, txtUsername;
     APIService apiService;
     User user = null;
+    public FragmentManager fragMan = getSupportFragmentManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
         event();
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -92,6 +98,18 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    private void navigateToMyGroups() {
+        MyGroupsFragment myGroupsFragment = new MyGroupsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("fragMan", (Serializable) fragMan);
+        myGroupsFragment.setArguments(bundle);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.nav_host_fragment_content_main, myGroupsFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     private void logout() {

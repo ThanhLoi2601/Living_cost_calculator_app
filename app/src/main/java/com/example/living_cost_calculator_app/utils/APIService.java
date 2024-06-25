@@ -26,6 +26,8 @@ public interface APIService {
     Call<List<User>> findListUser(@Query("q") String query);
     @GET("user/find-by-username")
     Call<User> findByUsername(@Query("q") String query);
+    @GET("user/{user_id}")
+    Call<User> findUserById(@Path("user_id") String user_id);
     @POST("group")
     Call<Group> create_group(@Body Group group);
     @GET("group/user/{user_id}")
