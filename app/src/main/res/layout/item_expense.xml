@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_gradient">
+
+    <ImageButton
+        android:id="@+id/btn_remove_expense"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="70dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="4dp"
+        android:background="#00000000"
+
+        android:src="@drawable/ic_remove" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_toStartOf="@+id/btn_remove_expense"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvExpenseName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingBottom="8dp"
+            android:text="Expense Name"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvShareWith"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="2dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingBottom="16dp"
+            android:text="Share with"
+            android:textSize="18sp"
+            android:textStyle="italic" />
+
+        <TextView
+            android:id="@+id/tvCost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:paddingBottom="16dp"
+            android:text="0 VNĐ"
+            android:textColor="#FFE500"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</RelativeLayout>

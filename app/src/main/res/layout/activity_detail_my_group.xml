@@ -84,27 +84,65 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:backgroundTint="@color/teal_700"
+                    android:backgroundTint="@color/black"
                     android:text="num Members"
                     android:textSize="18sp"
                     app:icon="@drawable/ic_group" />
             </LinearLayout>
 
+            <Button
+                android:id="@+id/btn_add_user_share"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/black"
+                android:text="ADD USER" />
+
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerExpenses"
+                android:id="@+id/rv_users_share"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:background="@color/white"
                 android:clipToPadding="false"
                 android:padding="8dp"
-                android:scrollbars="vertical" />
+                android:scrollbars="vertical"
+                android:layout_marginBottom="8dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:text="EXPENSE OF GROUP"
+                android:textColor="@color/white"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:textAllCaps="true"/>
+            <Button
+                android:id="@+id/btn_add_expense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/black"
+                android:text="ADD EXPENSE" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_Expenses"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:background="@color/white"
+                android:clipToPadding="false"
+                android:padding="8dp"
+                android:scrollbars="vertical"
+                android:layout_marginBottom="8dp"/>
+
+            <Button
+                android:id="@+id/btn_leave_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="LEAVE GROUP"
+                app:icon="@drawable/ic_logout"
+                app:iconGravity="textStart" />
+
         </LinearLayout>
     </ScrollView>
-    <include
-        android:id="@+id/footer"
-        layout="@layout/footer_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
 </RelativeLayout>

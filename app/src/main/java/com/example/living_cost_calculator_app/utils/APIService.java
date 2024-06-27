@@ -1,5 +1,6 @@
 package com.example.living_cost_calculator_app.utils;
 
+import com.example.living_cost_calculator_app.models.Expense;
 import com.example.living_cost_calculator_app.models.Group;
 import com.example.living_cost_calculator_app.models.User;
 
@@ -32,4 +33,6 @@ public interface APIService {
     Call<Group> create_group(@Body Group group);
     @GET("group/user/{user_id}")
     Call<List<Group>> getGroupsByUserId(@Path("user_id") String user_id);
+    @GET("expense/group/{group_id}")
+    Call<List<Expense>> getExpensesByGroupId(@Path("group_id") String group_id);
 }
