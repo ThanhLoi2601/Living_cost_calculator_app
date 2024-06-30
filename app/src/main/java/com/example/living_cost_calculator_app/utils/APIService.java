@@ -13,6 +13,7 @@ import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -35,4 +36,8 @@ public interface APIService {
     Call<List<Group>> getGroupsByUserId(@Path("user_id") String user_id);
     @GET("expense/group/{group_id}")
     Call<List<Expense>> getExpensesByGroupId(@Path("group_id") String group_id);
+    @PUT("group/remove-user")
+    Call<Group> removeUser(@Body Group.group_user group_user);
+    @PUT("group/add-user")
+    Call<Group> addUser(@Body Group.group_user group_user);
 }

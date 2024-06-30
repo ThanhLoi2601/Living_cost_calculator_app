@@ -38,6 +38,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.concurrent.Callable;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -172,8 +173,34 @@ public class MainActivity extends AppCompatActivity {
         }else{
             txtEmail.setText(user.getEmail());
             txtUsername.setText(user.getUsername());
-            findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+            findUserByUsername(()->{
+                SessionManager.getInstance(this).saveUser(user);
+                findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+                return null;
+            });
         }
     }
 
+    public void findUserByUsername(Callable function){
+        apiService = RetrofitClient.getAPIService();
+        Call<User> call = apiService.findByUsername(user.getUsername());
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if(response.isSuccessful()) {
+                    user = response.body();
+                    try {
+                        function.call();
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.d("logg", t.getMessage());
+            }
+        });
+    }
 }

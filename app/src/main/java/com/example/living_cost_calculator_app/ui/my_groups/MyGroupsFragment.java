@@ -62,6 +62,12 @@ public class MyGroupsFragment extends Fragment {
         findUserByUsername();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        findListGroupsByUserId();
+    }
+
     public void findListGroupsByUserId(){
         apiService = RetrofitClient.getAPIService();
         Call<List<Group>> call = apiService.getGroupsByUserId(user.getId());
@@ -69,6 +75,7 @@ public class MyGroupsFragment extends Fragment {
             @Override
             public void onResponse(Call<List<Group>> call, Response<List<Group>> response) {
                 if(response.isSuccessful()) {
+                    root.findViewById(R.id.loadingPanel).setVisibility(View.GONE);
                     ls_groups = response.body();
                     //Log.d("Test",ls_groups.get(0).getName());
                     adapter = new MyGroupAdapter(root.getContext(), ls_groups);
@@ -77,7 +84,6 @@ public class MyGroupsFragment extends Fragment {
                     rc_my_groups.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
                 }
-                root.findViewById(R.id.loadingPanel).setVisibility(View.GONE);
             }
 
             @Override

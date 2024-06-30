@@ -62,4 +62,34 @@ public class Group implements Serializable {
     public void setUsers(List<String> users) {
         this.users = users;
     }
+
+    public static class group_user implements Serializable{
+        @SerializedName("groupId")
+        private String groupId;
+
+        @SerializedName("userIds")
+        private List<String> userIds;
+
+        public group_user(String groupId, List<String> userIds) {
+            this.groupId = groupId;
+            this.userIds = userIds;
+        }
+
+        public String getGroupId() {
+            return groupId;
+        }
+
+        public void setGroupId(String groupId) {
+            this.groupId = groupId;
+        }
+
+        public List<String> getUserIds() {
+            return userIds;
+        }
+
+        public void setUserIds(List<String> userIds) {
+            this.userIds = userIds;
+        }
+    }
+
 }

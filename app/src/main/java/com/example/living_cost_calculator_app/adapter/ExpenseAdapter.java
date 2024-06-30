@@ -14,6 +14,7 @@ import com.example.living_cost_calculator_app.R;
 import com.example.living_cost_calculator_app.models.Expense;
 import com.example.living_cost_calculator_app.models.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.MyViewHolder>{
@@ -38,7 +39,11 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.MyViewHo
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Expense exp = array.get(position);
         holder.tvExpenseName.setText(exp.getName());
-        //holder.tvShareWith.setText(String.join(", "));
+        List<String> ls_username = new ArrayList<>();
+        for(User u : exp.getShared_with()){
+            ls_username.add(u.getUsername());
+        }
+        holder.tvShareWith.setText("Share: " + String.join(", ", ls_username));
         holder.tvCost.setText(exp.getCost() + " VNĐ");
     }
 

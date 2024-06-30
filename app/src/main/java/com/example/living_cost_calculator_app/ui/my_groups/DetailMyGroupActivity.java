@@ -1,10 +1,14 @@
 package com.example.living_cost_calculator_app.ui.my_groups;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -25,6 +29,7 @@ import com.example.living_cost_calculator_app.models.Group;
 import com.example.living_cost_calculator_app.models.User;
 import com.example.living_cost_calculator_app.utils.APIService;
 import com.example.living_cost_calculator_app.utils.RetrofitClient;
+import com.example.living_cost_calculator_app.utils.SessionManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +42,7 @@ import retrofit2.Response;
 public class DetailMyGroupActivity extends AppCompatActivity {
     Group group;
     TextView tvNameGroup, tv_creator;
-    Button btn_numMembers, btn_add_user_share;
+    Button btn_numMembers, btn_add_user_share, btn_leave_group;
     RecyclerView rv_users_share, rv_Expenses;
     APIService apiService;
     User user, user_creator;
@@ -66,6 +71,7 @@ public class DetailMyGroupActivity extends AppCompatActivity {
         rv_users_share = findViewById(R.id.rv_users_share);
         btn_add_user_share = findViewById(R.id.btn_add_user_share);
         rv_Expenses = findViewById(R.id.rv_Expenses);
+        btn_leave_group = findViewById(R.id.btn_leave_group);
     }
 
     private void event(){
@@ -106,6 +112,65 @@ public class DetailMyGroupActivity extends AppCompatActivity {
                 num_click_numMembers ++;
             }
         });
+        user = SessionManager.getInstance(getApplicationContext()).getUser();
+        btn_leave_group.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(DetailMyGroupActivity.this);
+                builder.setTitle("Message").setMessage("Confirm leave group ?")
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                removeUser(()->{
+                                    if(group != null){
+                                        finish();
+                                    }
+                                    return null;
+                                });
+                            }
+                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                            }
+                        }).show();
+            }
+        });
+
+        btn_add_user_share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final EditText input = new EditText(DetailMyGroupActivity.this);
+                input.setHint("Enter Username");
+
+                new AlertDialog.Builder(DetailMyGroupActivity.this)
+                        .setTitle("ADD USER")
+                        .setView(input)
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String userInput = input.getText().toString().trim();
+                                user = new User(userInput);
+                                findUserByUsername(()->{
+                                    if(user.getId() != null){
+                                        addUser(()->{
+
+                                            return null;
+                                        });
+                                    }
+                                    return null;
+                                });
+                            }
+                        })
+                        .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        })
+                        .show();
+            }
+        });
+
         tvNameGroup.setText(group.getName());
         btn_numMembers.setText(group.getUsers().size() + " members");
         toolbar.setTitle(group.getName() + " Details");
@@ -126,6 +191,56 @@ public class DetailMyGroupActivity extends AppCompatActivity {
             return null;
         });
 
+    }
+
+    public void removeUser(Callable function){
+        apiService = RetrofitClient.getAPIService();
+        List<String> ls_user = new ArrayList<>();
+        ls_user.add(user.getId());
+        Call<Group> call = apiService.removeUser(new Group.group_user(group.getId(), ls_user));
+        call.enqueue(new Callback<Group>() {
+            @Override
+            public void onResponse(Call<Group> call, Response<Group> response) {
+                if(response.isSuccessful()) {
+                    group = response.body();
+                    try {
+                        function.call();
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Group> call, Throwable t) {
+                Log.d("logg", t.getMessage());
+            }
+        });
+    }
+
+    public void addUser(Callable function){
+        apiService = RetrofitClient.getAPIService();
+        List<String> ls_user = new ArrayList<>();
+        ls_user.add(user.getId());
+        Call<Group> call = apiService.addUser(new Group.group_user(group.getId(), ls_user));
+        call.enqueue(new Callback<Group>() {
+            @Override
+            public void onResponse(Call<Group> call, Response<Group> response) {
+                if(response.isSuccessful()) {
+                    group = response.body();
+                    try {
+                        function.call();
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Group> call, Throwable t) {
+                Log.d("logg", t.getMessage());
+            }
+        });
     }
 
     private void getExpensesByGroupId(Callable function){
@@ -154,6 +269,29 @@ public class DetailMyGroupActivity extends AppCompatActivity {
     private void findUserById(Callable function ){
         apiService = RetrofitClient.getAPIService();
         Call<User> call = apiService.findUserById(user.getId());
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if(response.isSuccessful()) {
+                    user = response.body();
+                    try {
+                        function.call();
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.d("logg", t.getMessage());
+            }
+        });
+    }
+
+    public void findUserByUsername(Callable function){
+        apiService = RetrofitClient.getAPIService();
+        Call<User> call = apiService.findByUsername(user.getUsername());
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {

@@ -19,12 +19,12 @@ public class Expense implements Serializable {
     private String creator;
 
     @SerializedName("shared_with")
-    private List<String> shared_with;
+    private List<User> shared_with;
 
     @SerializedName("group")
     private String group;
 
-    public Expense(String id, String name, int cost, String creator, List<String> shared_with, String group) {
+    public Expense(String id, String name, int cost, String creator, List<User> shared_with, String group) {
         this.id = id;
         this.name = name;
         this.cost = cost;
@@ -57,11 +57,11 @@ public class Expense implements Serializable {
         this.cost = cost;
     }
 
-    public List<String> getShared_with() {
+    public List<User> getShared_with() {
         return shared_with;
     }
 
-    public void setShared_with(List<String> shared_with) {
+    public void setShared_with(List<User> shared_with) {
         this.shared_with = shared_with;
     }
 
